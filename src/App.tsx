@@ -52,7 +52,7 @@ function App() {
       case 'streaks': return <Streaks />;
       case 'offers': return <Offers />;
       case 'ai': return <AIInsights />;
-      case 'feedback' : return<feedback/>;
+      case 'feedback' : return <feedback/>;
       default: return <Dashboard />;
     }
   };
