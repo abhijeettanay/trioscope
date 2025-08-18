@@ -20,22 +20,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
 
-  const pretty = {
-      dashboard: 'Dashboard',
-      budget: 'Budget',
-      payments: 'Payments',
-      split: 'Split Bills',
-      group: 'Group Funds',
-      subscriptions: 'Subscriptions',
-      gigs: 'Gigs',
-      invest: 'Investments',
-      loans: 'Loans',
-      streaks: 'Streaks',
-      offers: 'Offers',
-      ai: 'AI Insights',
-    };
-    document.title = `${APP_NAME} — ${pretty[activeTab] || ''}`;
-  }, [activeTab]);
+  
 
   const renderContent = () => {
     switch (activeTab) {
@@ -69,22 +54,13 @@ function App() {
   };
 
  return (
-  <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
-    <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-    
-    <div className="flex-1 flex flex-col">
-      {/* App Title/Header */}
-      <header className="bg-white border-b shadow-sm p-4">
-        <h1 className="text-2xl font-bold text-gray-800">{APP_NAME}</h1>
-      </header>
-
-      {/* Main Content */}
+    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
       <main className="flex-1 pb-20 md:pb-0">
         {renderContent()}
       </main>
     </div>
-  </div>
-);
+  );
 }
 
 export default App;
