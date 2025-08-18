@@ -73,7 +73,7 @@ export const groupFunds: GroupFund[] = [
   },
   {
     id: '2',
-    title: 'Group Trip to Goa',
+    title: "abinesh's birthday party",
     targetAmount: 15000,
     currentAmount: 8500,
     contributors: [
@@ -83,7 +83,7 @@ export const groupFunds: GroupFund[] = [
       { userId: '4', amount: 2000 }
     ],
     deadline: '2025-03-15',
-    description: 'Spring break trip planning'
+    description: 'labubu for abinesh '
   }
 ];
 
