@@ -68,7 +68,7 @@ export const groupFunds: GroupFund[] = [
       { userId: '3', amount: 3000 },
       { userId: '4', amount: 500 }
     ],
-    deadline: '2025-01-25',
+    deadline: '2025-09-25',
     description: "kitty party at abinesh's home"
   },
   {
@@ -82,7 +82,7 @@ export const groupFunds: GroupFund[] = [
       { userId: '3', amount: 2000 },
       { userId: '4', amount: 2000 }
     ],
-    deadline: '2025-03-15',
+    deadline: '2025-10-15',
     description: 'labubu for abinesh '
   }
 ];
