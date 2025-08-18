@@ -17,11 +17,7 @@ const Dashboard: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">Welcome back, {currentUser.name.split(' ')[0]}!</h1>
           <p className="text-gray-600">Here's your financial overview</p>
         </div>
-        <img 
-          src={currentUser.avatar} 
-          alt="Profile" 
-          className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-bold border-2 border-purple-200"
-        />
+       
         <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-bold border-2 border-purple-200">
           {currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase()}
         </div>
