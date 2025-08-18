@@ -23,6 +23,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'budget', label: 'Budget', icon: CreditCard },
+    { id: 'ai', label: 'AI Insights', icon: Brain },
     { id: 'payments', label: 'Payments', icon: Smartphone },
     { id: 'split', label: 'Split Bills', icon: Users },
     { id: 'group', label: 'Group Fund', icon: PiggyBank },
@@ -32,7 +33,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
     { id: 'loans', label: 'Loans', icon: HandHeart },
     { id: 'streaks', label: 'Streaks', icon: Flame },
     { id: 'offers', label: 'Offers', icon: Percent },
-    { id: 'ai', label: 'AI Insights', icon: Brain },
+    
   ];
 
   return (
