@@ -116,19 +116,34 @@ const SplitBills: React.FC = () => {
                     <p className="text-sm text-gray-600">Participants</p>
                     <div className="flex items-center mt-1">
                       {bill.participants.map((participantId, index) => {
-                        const participant = users.find(u => u.id === participantId);
-                        return (
-                          <img
-                            key={participantId}
-                            src={participant?.avatar || ''}
-                            alt={participant?.name}
-                            className={`w-8 h-8 rounded-full border-2 border-white bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold ${
-                              index > 0 ? '-ml-2' : ''
-                            }`}
-                          >
-                            {!participant?.avatar && participant?.name.split(' ').map(n => n[0]).join('').toUpperCase()}
-                          </img>
-                        );
+                       const participant = users.find(u => u.id === participantId);
+if (!participant) return null;
+
+return participant.avatar ? (
+  <img
+    key={participantId}
+    src={participant.avatar}
+    alt={participant.name}
+    className={`w-8 h-8 rounded-full border-2 border-white object-cover ${
+      index > 0 ? '-ml-2' : ''
+    }`}
+  />
+) : (
+  <div
+    key={participantId}
+    className={`w-8 h-8 rounded-full border-2 border-white bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold ${
+      index > 0 ? '-ml-2' : ''
+    }`}
+  >
+    {participant.name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()}
+  </div>
+);
+
+                        
                       })}
                       <span className="ml-3 text-sm text-gray-600">
                         {bill.participants.length} people
