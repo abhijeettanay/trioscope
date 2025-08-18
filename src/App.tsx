@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navigation from './components/Navigation';
 import Dashboard from './components/Dashboard';
@@ -57,23 +56,24 @@ function App() {
   };
 
   return (
-  <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
-    <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-    
-    <div className="flex-1 flex flex-col">
-      {/* App Title/Header */}
-      <header className="bg-white border-b shadow-sm p-4">
-        <h1 className="text-2xl font-extrabold text-red-600 tracking-wide">
-          {APP_NAME}
-        </h1>
-      </header>
+    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
+      
+      <div className="flex-1 flex flex-col">
+        {/* App Title/Header */}
+        <header className="bg-white border-b shadow-sm p-4">
+          <h1 className="text-3xl font-extrabold text-purple-700 tracking-wide drop-shadow-sm">
+            {APP_NAME}
+          </h1>
+        </header>
 
-      {/* Main Content */}
-      <main className="flex-1 pb-20 md:pb-0">
-        {renderContent()}
-      </main>
+        {/* Main Content */}
+        <main className="flex-1 pb-20 md:pb-0">
+          {renderContent()}
+        </main>
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
 export default App;
