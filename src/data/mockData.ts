@@ -182,3 +182,8 @@ export const subscriptions: Subscription[] = [
   { id: '3', name: 'Adobe Creative', amount: 1675, billingCycle: 'monthly', nextBilling: '2025-02-01', status: 'active', autopay: false, category: 'productivity', icon: '🎨' },
   { id: '4', name: 'Coursera Plus', amount: 399, billingCycle: 'monthly', nextBilling: '2025-01-30', status: 'paused', autopay: false, category: 'education', icon: '🎓' },
 ];
+const abineshData = {
+  id: "1",
+  name: "Abinesh",
+  info: "This is Abinesh’s section content",
+};
