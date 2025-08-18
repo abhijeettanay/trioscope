@@ -119,4 +119,11 @@ export interface Subscription {
   autopay: boolean;
   category: 'entertainment' | 'productivity' | 'education' | 'other';
   icon: string;
+  
+}
+export interface Abinesh {
+  id: string;
+  title: string;
+  description?: string;
+  createdAt: string;
 }
