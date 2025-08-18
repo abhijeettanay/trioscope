@@ -1,11 +1,11 @@
-import { User, Expense, SplitBill, GroupFund, Gig, Investment, Loan, Offer } from '../types';
+import { User, Expense, SplitBill, GroupFund, Gig, Investment, Loan, Offer, Contact, Transaction, BudgetCategory, Subscription } from '../types';
 
 export const users: User[] = [
   {
     id: '1',
     name: 'Akanksha ',
     email: 'akanksha@college.edu',
-    avatar: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+    avatar: '',
     totalSavings: 15420,
     monthlyBudget: 8000,
     points: 850,
@@ -15,7 +15,7 @@ export const users: User[] = [
     id: '2',
     name: 'Abhijeet ',
     email: 'abhijeet@college.edu',
-    avatar: 'https://www.pexels.com/photo/grey-decor-tied-with-white-string-1111322/',
+    avatar: '',
     totalSavings: 12300,
     monthlyBudget: 7500,
     points: 720,
@@ -25,7 +25,7 @@ export const users: User[] = [
     id: '3',
     name: 'Abinesh ',
     email: 'abinesh@college.edu',
-    avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+    avatar: '',
     totalSavings: 9850,
     monthlyBudget: 6500,
     points: 640,
@@ -35,7 +35,7 @@ export const users: User[] = [
     id: '4',
     name: 'Anuva Gupta',
     email: 'anuva@college.edu',
-    avatar: 'https://images.pexels.com/photos/3814446/pexels-photo-3814446.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+    avatar: '',
     totalSavings: 18200,
     monthlyBudget: 9000,
     points: 920,
@@ -151,4 +151,34 @@ export const offers: Offer[] = [
   { id: '2', brand: 'Swiggy', title: 'Free delivery on all orders', discount: 'FREE DELIVERY', category: 'food', validUntil: '2025-01-25' },
   { id: '3', brand: 'Amazon', title: '₹500 off on electronics', discount: '₹500 OFF', category: 'shopping', validUntil: '2025-01-30', code: 'TECH500' },
   { id: '4', brand: 'BookMyShow', title: 'Buy 1 Get 1 Free on movie tickets', discount: 'BOGO', category: 'entertainment', validUntil: '2025-01-22' },
+];
+
+export const contacts: Contact[] = [
+  { id: '1', name: 'Abhijeet', phone: '+91 98765 43210', upiId: 'abhijeet@paytm', isFrequent: true },
+  { id: '2', name: 'Abinesh', phone: '+91 87654 32109', upiId: 'abinesh@gpay', isFrequent: true },
+  { id: '3', name: 'Anuva Gupta', phone: '+91 76543 21098', upiId: 'anuva@phonepe', isFrequent: true },
+  { id: '4', name: 'Rohit Kumar', phone: '+91 65432 10987', upiId: 'rohit@paytm', isFrequent: false },
+  { id: '5', name: 'Priya Singh', phone: '+91 54321 09876', upiId: 'priya@gpay', isFrequent: false },
+];
+
+export const transactions: Transaction[] = [
+  { id: '1', type: 'sent', amount: 500, contactId: '1', description: 'Lunch split', date: '2025-01-10', status: 'completed' },
+  { id: '2', type: 'received', amount: 200, contactId: '2', description: 'Movie tickets', date: '2025-01-09', status: 'completed' },
+  { id: '3', type: 'sent', amount: 150, contactId: '3', description: 'Coffee', date: '2025-01-08', status: 'pending' },
+];
+
+export const budgetCategories: BudgetCategory[] = [
+  { id: '1', name: 'Canteen', allocated: 2000, spent: 1500, icon: '🍽️', color: 'bg-red-500' },
+  { id: '2', name: 'Outings', allocated: 1500, spent: 800, icon: '🎉', color: 'bg-purple-500' },
+  { id: '3', name: 'Transport', allocated: 800, spent: 450, icon: '🚌', color: 'bg-blue-500' },
+  { id: '4', name: 'Study Materials', allocated: 1000, spent: 600, icon: '📚', color: 'bg-green-500' },
+  { id: '5', name: 'Shopping', allocated: 1200, spent: 300, icon: '🛍️', color: 'bg-yellow-500' },
+  { id: '6', name: 'Entertainment', allocated: 800, spent: 250, icon: '🎬', color: 'bg-pink-500' },
+];
+
+export const subscriptions: Subscription[] = [
+  { id: '1', name: 'Netflix', amount: 199, billingCycle: 'monthly', nextBilling: '2025-01-25', status: 'active', autopay: true, category: 'entertainment', icon: '🎬' },
+  { id: '2', name: 'Spotify', amount: 119, billingCycle: 'monthly', nextBilling: '2025-01-20', status: 'active', autopay: true, category: 'entertainment', icon: '🎵' },
+  { id: '3', name: 'Adobe Creative', amount: 1675, billingCycle: 'monthly', nextBilling: '2025-02-01', status: 'active', autopay: false, category: 'productivity', icon: '🎨' },
+  { id: '4', name: 'Coursera Plus', amount: 399, billingCycle: 'monthly', nextBilling: '2025-01-30', status: 'paused', autopay: false, category: 'education', icon: '🎓' },
 ];

@@ -120,12 +120,14 @@ const SplitBills: React.FC = () => {
                         return (
                           <img
                             key={participantId}
-                            src={participant?.avatar}
+                            src={participant?.avatar || ''}
                             alt={participant?.name}
-                            className={`w-8 h-8 rounded-full object-cover border-2 border-white ${
+                            className={`w-8 h-8 rounded-full border-2 border-white bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold ${
                               index > 0 ? '-ml-2' : ''
                             }`}
-                          />
+                          >
+                            {!participant?.avatar && participant?.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                          </img>
                         );
                       })}
                       <span className="ml-3 text-sm text-gray-600">
@@ -176,7 +178,9 @@ const SplitBills: React.FC = () => {
                   {users.slice(1).map((user) => (
                     <label key={user.id} className="flex items-center p-2 hover:bg-gray-50 rounded-lg">
                       <input type="checkbox" className="mr-3" />
-                      <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover mr-3" />
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold mr-3">
+                        {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                      </div>
                       <span className="text-sm">{user.name}</span>
                     </label>
                   ))}

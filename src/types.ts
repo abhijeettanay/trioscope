@@ -81,3 +81,42 @@ export interface Offer {
   validUntil: string;
   code?: string;
 }
+
+export interface Contact {
+  id: string;
+  name: string;
+  phone: string;
+  upiId: string;
+  isFrequent: boolean;
+}
+
+export interface Transaction {
+  id: string;
+  type: 'sent' | 'received';
+  amount: number;
+  contactId: string;
+  description: string;
+  date: string;
+  status: 'completed' | 'pending' | 'failed';
+}
+
+export interface BudgetCategory {
+  id: string;
+  name: string;
+  allocated: number;
+  spent: number;
+  icon: string;
+  color: string;
+}
+
+export interface Subscription {
+  id: string;
+  name: string;
+  amount: number;
+  billingCycle: 'monthly' | 'yearly';
+  nextBilling: string;
+  status: 'active' | 'paused' | 'cancelled';
+  autopay: boolean;
+  category: 'entertainment' | 'productivity' | 'education' | 'other';
+  icon: string;
+}

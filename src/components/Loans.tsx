@@ -140,11 +140,9 @@ const Loans: React.FC = () => {
                   <div key={loan.id} className={`border rounded-lg p-4 ${getStatusColor(loan.status)}`}>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center">
-                        <img 
-                          src={getUserAvatar(users.find(u => u.name === loan.lender)?.id || '')} 
-                          alt={loan.lender}
-                          className="w-10 h-10 rounded-full object-cover mr-3"
-                        />
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-bold mr-3">
+                          {loan.lender.split(' ').map(n => n[0]).join('').toUpperCase()}
+                        </div>
                         <div>
                           <p className="font-medium text-gray-900">₹{loan.amount.toLocaleString()}</p>
                           <p className="text-sm text-gray-600">to {loan.lender}</p>
@@ -215,11 +213,9 @@ const Loans: React.FC = () => {
                   <div key={loan.id} className={`border rounded-lg p-4 ${getStatusColor(loan.status)}`}>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center">
-                        <img 
-                          src={getUserAvatar(users.find(u => u.name === loan.borrower)?.id || '')} 
-                          alt={loan.borrower}
-                          className="w-10 h-10 rounded-full object-cover mr-3"
-                        />
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-bold mr-3">
+                          {loan.borrower.split(' ').map(n => n[0]).join('').toUpperCase()}
+                        </div>
                         <div>
                           <p className="font-medium text-gray-900">₹{loan.amount.toLocaleString()}</p>
                           <p className="text-sm text-gray-600">from {loan.borrower}</p>

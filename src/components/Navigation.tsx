@@ -9,7 +9,9 @@ import {
   HandHeart, 
   Flame, 
   Percent, 
-  Brain 
+  Brain,
+  Smartphone,
+  Calendar
 } from 'lucide-react';
 
 interface NavigationProps {
@@ -21,8 +23,10 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'budget', label: 'Budget', icon: CreditCard },
+    { id: 'payments', label: 'Payments', icon: Smartphone },
     { id: 'split', label: 'Split Bills', icon: Users },
     { id: 'group', label: 'Group Fund', icon: PiggyBank },
+    { id: 'subscriptions', label: 'Subscriptions', icon: Calendar },
     { id: 'gigs', label: 'Gigs', icon: Briefcase },
     { id: 'invest', label: 'Invest', icon: TrendingUp },
     { id: 'loans', label: 'Loans', icon: HandHeart },

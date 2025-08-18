@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Plus, TrendingDown, Filter, PieChart } from 'lucide-react';
-import { currentUser, expenses } from '../data/mockData';
+import { Plus, TrendingDown, Filter, PieChart, Target } from 'lucide-react';
+import { currentUser, expenses, budgetCategories } from '../data/mockData';
 
 const Budget: React.FC = () => {
   const [showAddExpense, setShowAddExpense] = useState(false);
@@ -8,17 +8,14 @@ const Budget: React.FC = () => {
   
   const categories = ['all', 'food', 'transport', 'entertainment', 'study', 'other'];
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  const totalAllocated = budgetCategories.reduce((sum, cat) => sum + cat.allocated, 0);
+  const totalSpent = budgetCategories.reduce((sum, cat) => sum + cat.spent, 0);
   const budgetRemaining = currentUser.monthlyBudget - totalExpenses;
   const budgetUsed = (totalExpenses / currentUser.monthlyBudget) * 100;
 
   const filteredExpenses = selectedCategory === 'all' 
     ? expenses 
     : expenses.filter(expense => expense.category === selectedCategory);
-
-  const categoryTotals = categories.slice(1).map(category => ({
-    name: category,
-    amount: expenses.filter(e => e.category === category).reduce((sum, e) => sum + e.amount, 0)
-  }));
 
   const getCategoryColor = (category: string) => {
     const colors = {
@@ -51,17 +48,17 @@ const Budget: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Monthly Budget</h3>
+            <h3 className="text-lg font-semibold text-gray-900">Total Budget</h3>
             <PieChart className="w-6 h-6 text-purple-500" />
           </div>
-          <p className="text-3xl font-bold text-gray-900 mb-2">₹{currentUser.monthlyBudget.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-gray-900 mb-2">₹{totalAllocated.toLocaleString()}</p>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div 
               className="bg-gradient-to-r from-orange-400 to-orange-600 h-3 rounded-full" 
-              style={{ width: `${Math.min(budgetUsed, 100)}%` }}
+              style={{ width: `${Math.min((totalSpent / totalAllocated) * 100, 100)}%` }}
             ></div>
           </div>
-          <p className="text-sm text-gray-600 mt-2">{budgetUsed.toFixed(1)}% used</p>
+          <p className="text-sm text-gray-600 mt-2">{((totalSpent / totalAllocated) * 100).toFixed(1)}% used</p>
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
@@ -69,37 +66,118 @@ const Budget: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-900">Total Spent</h3>
             <TrendingDown className="w-6 h-6 text-red-500" />
           </div>
-          <p className="text-3xl font-bold text-red-600 mb-2">₹{totalExpenses.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-red-600 mb-2">₹{totalSpent.toLocaleString()}</p>
           <p className="text-sm text-gray-600">This month</p>
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">Remaining</h3>
-            <div className={`p-2 rounded-full ${budgetRemaining >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
-              <TrendingDown className={`w-6 h-6 ${budgetRemaining >= 0 ? 'text-green-500' : 'text-red-500'}`} />
+            <div className={`p-2 rounded-full ${(totalAllocated - totalSpent) >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
+              <TrendingDown className={`w-6 h-6 ${(totalAllocated - totalSpent) >= 0 ? 'text-green-500' : 'text-red-500'}`} />
             </div>
           </div>
-          <p className={`text-3xl font-bold mb-2 ${budgetRemaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            ₹{Math.abs(budgetRemaining).toLocaleString()}
+          <p className={`text-3xl font-bold mb-2 ${(totalAllocated - totalSpent) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            ₹{Math.abs(totalAllocated - totalSpent).toLocaleString()}
           </p>
-          <p className="text-sm text-gray-600">{budgetRemaining >= 0 ? 'Left to spend' : 'Over budget'}</p>
+          <p className="text-sm text-gray-600">{(totalAllocated - totalSpent) >= 0 ? 'Left to spend' : 'Over budget'}</p>
         </div>
       </div>
 
       {/* Category Breakdown */}
       <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Spending by Category</h3>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {categoryTotals.map((category) => (
-            <div key={category.name} className={`p-4 rounded-lg ${getCategoryColor(category.name)}`}>
-              <p className="font-medium capitalize">{category.name}</p>
-              <p className="text-2xl font-bold">₹{category.amount}</p>
-              <p className="text-sm opacity-75">
-                {totalExpenses > 0 ? ((category.amount / totalExpenses) * 100).toFixed(1) : 0}%
-              </p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">Budget Categories</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {budgetCategories.map((category) => {
+            const percentage = (category.spent / category.allocated) * 100;
+            const isOverBudget = category.spent > category.allocated;
+            
+            return (
+              <div key={category.id} className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center">
+                    <span className="text-2xl mr-3">{category.icon}</span>
+                    <h4 className="font-semibold text-gray-900">{category.name}</h4>
+                  </div>
+                  <Target className="w-5 h-5 text-gray-400" />
+                </div>
+                
+                <div className="mb-3">
+                  <div className="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>₹{category.spent.toLocaleString()}</span>
+                    <span>₹{category.allocated.toLocaleString()}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div 
+                      className={`h-3 rounded-full transition-all duration-300 ${
+                        isOverBudget 
+                          ? 'bg-gradient-to-r from-red-500 to-red-600' 
+                          : percentage > 80 
+                            ? 'bg-gradient-to-r from-orange-400 to-orange-600'
+                            : 'bg-gradient-to-r from-green-400 to-green-600'
+                      }`}
+                      style={{ width: `${Math.min(percentage, 100)}%` }}
+                    ></div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className={`text-sm font-medium ${
+                    isOverBudget ? 'text-red-600' : 
+                    percentage > 80 ? 'text-orange-600' : 'text-green-600'
+                  }`}>
+                    {percentage.toFixed(1)}% used
+                  </span>
+                  <span className="text-sm text-gray-600">
+                    ₹{(category.allocated - category.spent).toLocaleString()} left
+                  </span>
+                </div>
+                
+                {isOverBudget && (
+                  <div className="mt-2 p-2 bg-red-100 border border-red-200 rounded text-xs text-red-800">
+                    ⚠️ Over budget by ₹{(category.spent - category.allocated).toLocaleString()}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        
+        <div className="mt-6 flex justify-center">
+          <button className="bg-gradient-to-r from-purple-500 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-purple-600 hover:to-blue-700 transition-all">
+            Adjust Budgets
+          </button>
+        </div>
+      </div>
+
+      {/* Quick Budget Actions */}
+      <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button className="p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+            <div className="text-center">
+              <div className="text-2xl mb-2">🍽️</div>
+              <p className="text-sm font-medium text-purple-800">Add to Canteen</p>
             </div>
-          ))}
+          </button>
+          <button className="p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+            <div className="text-center">
+              <div className="text-2xl mb-2">🚌</div>
+              <p className="text-sm font-medium text-blue-800">Add Transport</p>
+            </div>
+          </button>
+          <button className="p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+            <div className="text-center">
+              <div className="text-2xl mb-2">📚</div>
+              <p className="text-sm font-medium text-green-800">Add Study</p>
+            </div>
+          </button>
+          <button className="p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+            <div className="text-center">
+              <div className="text-2xl mb-2">🎉</div>
+              <p className="text-sm font-medium text-orange-800">Add Outing</p>
+            </div>
+          </button>
         </div>
       </div>
 

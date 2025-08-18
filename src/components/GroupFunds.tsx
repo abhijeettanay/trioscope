@@ -128,11 +128,9 @@ const GroupFunds: React.FC = () => {
                       return (
                         <div key={contributor.userId} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                           <div className="flex items-center">
-                            <img 
-                              src={user?.avatar} 
-                              alt={user?.name} 
-                              className="w-8 h-8 rounded-full object-cover mr-3"
-                            />
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold mr-3">
+                              {user?.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                            </div>
                             <span className="text-sm font-medium">{user?.name}</span>
                           </div>
                           <span className="text-sm font-semibold text-green-600">
@@ -190,7 +188,9 @@ const GroupFunds: React.FC = () => {
                   {users.slice(1).map((user) => (
                     <label key={user.id} className="flex items-center p-2 hover:bg-gray-50 rounded-lg">
                       <input type="checkbox" className="mr-3" />
-                      <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover mr-3" />
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold mr-3">
+                        {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                      </div>
                       <span className="text-sm">{user.name}</span>
                     </label>
                   ))}
