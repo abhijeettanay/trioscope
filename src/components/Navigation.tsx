@@ -11,6 +11,7 @@ import {
   Percent, 
   Brain,
   Smartphone,
+  MessageSquare,
   Calendar
 } from 'lucide-react';
 
@@ -33,6 +34,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
     { id: 'loans', label: 'Loans', icon: HandHeart },
     { id: 'streaks', label: 'Streaks', icon: Flame },
     { id: 'offers', label: 'Offers', icon: Percent },
+     { id: 'feedback', label: 'Feedback', icon: MessageSquare }, 
     
   ];
 
