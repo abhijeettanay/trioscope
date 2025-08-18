@@ -14,7 +14,7 @@ import Offers from './components/Offers';
 import AIInsights from './components/AIInsights';
 
 // App title constant
-const APP_NAME = 'TRIPPY';
+const APP_NAME = 'SPENDEMIC';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
