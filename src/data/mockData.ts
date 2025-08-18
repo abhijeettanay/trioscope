@@ -60,7 +60,7 @@ export const splitBills: SplitBill[] = [
 export const groupFunds: GroupFund[] = [
   {
     id: '1',
-    title: "abinesh's kitty party",
+    title: "Abinesh's kitty party",
     targetAmount: 20000,
     currentAmount: 1200,
     contributors: [
@@ -73,7 +73,7 @@ export const groupFunds: GroupFund[] = [
   },
   {
     id: '2',
-    title: "abinesh's birthday party",
+    title: "Abinesh's birthday party",
     targetAmount: 15000,
     currentAmount: 8500,
     contributors: [
