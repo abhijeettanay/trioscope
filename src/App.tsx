@@ -15,7 +15,7 @@ import Offers from './components/Offers';
 import AIInsights from './components/AIInsights';
 
 // App title constant
-const APP_NAME = 'My Finance App';
+const APP_NAME = 'tripyy';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
