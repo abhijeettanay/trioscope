@@ -31,9 +31,9 @@ const Feedback: React.FC = () => {
 
       <div className="bg-gray-100 p-4 rounded-lg">
         <h3 className="font-semibold mb-2">📞 Contact Us</h3>
-        <p>Support: +91 98765 43210</p>
-        <p>Sales: +91 91234 56789</p>
-        <p>Email: support@example.com</p>
+        
+        <p>Sales: +91 9122020097</p>
+        <p>Email: abhijeettanay@gmail.com</p>
       </div>
     </div>
   );
