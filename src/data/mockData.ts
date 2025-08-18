@@ -127,8 +127,8 @@ export const loans: Loan[] = [
   {
     id: '1',
     amount: 2000,
-    borrower: 'Abinesh Raj',
-    lender: 'Akanksha Sharma',
+    borrower: 'Abinesh ',
+    lender: 'Akanksha ',
     interestRate: 2,
     dueDate: '2025-02-15',
     status: 'active',
@@ -137,7 +137,7 @@ export const loans: Loan[] = [
   {
     id: '2',
     amount: 1500,
-    borrower: 'Akanksha Sharma',
+    borrower: 'Akanksha ',
     lender: 'Anuva Gupta',
     interestRate: 1,
     dueDate: '2025-01-30',
