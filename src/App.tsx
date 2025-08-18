@@ -12,7 +12,7 @@ import Loans from './components/Loans';
 import Streaks from './components/Streaks';
 import Offers from './components/Offers';
 import AIInsights from './components/AIInsights';
-
+import feedback from './components/feedback';
 // App title constant
 const APP_NAME = 'SPENDEMIC';
 
@@ -33,6 +33,7 @@ function App() {
       streaks: 'Streaks',
       offers: 'Offers',
       ai: 'AI Insights',
+      feedback:'Feedback'
     };
     document.title = `${APP_NAME} — ${pretty[activeTab] || ''}`;
   }, [activeTab]);
@@ -51,6 +52,7 @@ function App() {
       case 'streaks': return <Streaks />;
       case 'offers': return <Offers />;
       case 'ai': return <AIInsights />;
+      case 'feedback' : return<feedback/>;
       default: return <Dashboard />;
     }
   };
