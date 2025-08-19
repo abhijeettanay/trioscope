@@ -1,12 +1,33 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, Users, Target, Flame, Award } from 'lucide-react';
-import { currentUser, expenses, investments, groupFunds } from '../data/mockData';
+import { useProfile } from '../hooks/useProfile';
+import { useExpenses } from '../hooks/useExpenses';
+import { useBudgetCategories } from '../hooks/useBudgetCategories';
 
 const Dashboard: React.FC = () => {
-  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-  const totalInvestments = investments.reduce((sum, inv) => sum + inv.currentValue, 0);
-  const budgetUsed = (totalExpenses / currentUser.monthlyBudget) * 100;
+  const { profile, loading: profileLoading } = useProfile();
+  const { expenses, loading: expensesLoading } = useExpenses();
+  const { categories, loading: categoriesLoading } = useBudgetCategories();
 
+  if (profileLoading || expensesLoading || categoriesLoading) {
+    return (
+      <div className="p-6 flex items-center justify-center">
+        <div className="text-gray-600">Loading dashboard...</div>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="p-6 flex items-center justify-center">
+        <div className="text-gray-600">Profile not found</div>
+      </div>
+    );
+  }
+
+  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  const totalInvestments = 10000; // Mock data for now
+  const budgetUsed = (totalExpenses / profile.monthly_budget) * 100;
   const recentExpenses = expenses.slice(0, 3);
 
   return (
@@ -14,12 +35,12 @@ const Dashboard: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Welcome back, {currentUser.name.split(' ')[0]}!</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Welcome back, {profile.name.split(' ')[0]}!</h1>
           <p className="text-gray-600">Here's your financial overview</p>
         </div>
        
         <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-bold border-2 border-purple-200">
-          {currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+          {profile.name.split(' ').map(n => n[0]).join('').toUpperCase()}
         </div>
       </div>
 
@@ -29,7 +50,7 @@ const Dashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-purple-100">Total Savings</p>
-              <p className="text-2xl font-bold">₹{currentUser.totalSavings.toLocaleString()}</p>
+              <p className="text-2xl font-bold">₹{profile.total_savings.toLocaleString()}</p>
             </div>
             <TrendingUp className="w-8 h-8 text-purple-200" />
           </div>
@@ -39,7 +60,7 @@ const Dashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600">Monthly Budget</p>
-              <p className="text-2xl font-bold text-gray-900">₹{currentUser.monthlyBudget.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-gray-900">₹{profile.monthly_budget.toLocaleString()}</p>
               <div className="mt-2">
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
@@ -73,7 +94,7 @@ const Dashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600">Points</p>
-              <p className="text-2xl font-bold text-gray-900">{currentUser.points}</p>
+              <p className="text-2xl font-bold text-gray-900">{profile.points}</p>
               <div className="flex items-center mt-1">
                 <Award className="w-4 h-4 text-yellow-500 mr-1" />
                 <p className="text-sm text-yellow-600">Level 5</p>
@@ -115,7 +136,7 @@ const Dashboard: React.FC = () => {
                   <p className="text-sm text-gray-600">Days saving money</p>
                 </div>
               </div>
-              <p className="text-2xl font-bold text-orange-600">{currentUser.streaks.saver}</p>
+              <p className="text-2xl font-bold text-orange-600">{profile.saver_streak}</p>
             </div>
 
             <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
@@ -126,7 +147,7 @@ const Dashboard: React.FC = () => {
                   <p className="text-sm text-gray-600">Days within budget</p>
                 </div>
               </div>
-              <p className="text-2xl font-bold text-purple-600">{currentUser.streaks.budgeting}</p>
+              <p className="text-2xl font-bold text-purple-600">{profile.budgeting_streak}</p>
             </div>
           </div>
         </div>
@@ -134,26 +155,29 @@ const Dashboard: React.FC = () => {
 
       {/* Active Group Funds */}
       <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Active Group Funds</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {groupFunds.slice(0, 2).map((fund) => {
-            const progress = (fund.currentAmount / fund.targetAmount) * 100;
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Budget Categories</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {categories.slice(0, 3).map((category) => {
+            const progress = category.allocated > 0 ? (category.spent / category.allocated) * 100 : 0;
             return (
-              <div key={fund.id} className="p-4 bg-gradient-to-r from-teal-50 to-blue-50 rounded-lg border border-teal-100">
-                <h4 className="font-medium text-gray-900 mb-2">{fund.title}</h4>
+              <div key={category.id} className="p-4 bg-gradient-to-r from-teal-50 to-blue-50 rounded-lg border border-teal-100">
+                <div className="flex items-center mb-2">
+                  <span className="text-xl mr-2">{category.icon}</span>
+                  <h4 className="font-medium text-gray-900">{category.name}</h4>
+                </div>
                 <div className="mb-2">
                   <div className="flex justify-between text-sm text-gray-600 mb-1">
-                    <span>₹{fund.currentAmount.toLocaleString()}</span>
-                    <span>₹{fund.targetAmount.toLocaleString()}</span>
+                    <span>₹{category.spent.toLocaleString()}</span>
+                    <span>₹{category.allocated.toLocaleString()}</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
                       className="bg-gradient-to-r from-teal-500 to-blue-600 h-2 rounded-full" 
-                      style={{ width: `${progress}%` }}
+                      style={{ width: `${Math.min(progress, 100)}%` }}
                     ></div>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600">{progress.toFixed(1)}% complete</p>
+                <p className="text-sm text-gray-600">{progress.toFixed(1)}% used</p>
               </div>
             );
           })}
