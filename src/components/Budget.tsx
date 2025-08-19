@@ -1,21 +1,49 @@
 import React, { useState } from 'react';
 import { Plus, TrendingDown, Filter, PieChart, Target } from 'lucide-react';
-import { currentUser, expenses, budgetCategories } from '../data/mockData';
+import { useProfile } from '../hooks/useProfile';
+import { useExpenses } from '../hooks/useExpenses';
+import { useBudgetCategories } from '../hooks/useBudgetCategories';
 
 const Budget: React.FC = () => {
+  const { profile } = useProfile();
+  const { expenses, addExpense } = useExpenses();
+  const { categories } = useBudgetCategories();
   const [showAddExpense, setShowAddExpense] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [newExpense, setNewExpense] = useState({
+    title: '',
+    amount: '',
+    category: 'food' as const,
+  });
   
-  const categories = ['all', 'food', 'transport', 'entertainment', 'study', 'other'];
+  const categoriesFilter = ['all', 'food', 'transport', 'entertainment', 'study', 'other'];
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-  const totalAllocated = budgetCategories.reduce((sum, cat) => sum + cat.allocated, 0);
-  const totalSpent = budgetCategories.reduce((sum, cat) => sum + cat.spent, 0);
-  const budgetRemaining = currentUser.monthlyBudget - totalExpenses;
-  const budgetUsed = (totalExpenses / currentUser.monthlyBudget) * 100;
+  const totalAllocated = categories.reduce((sum, cat) => sum + cat.allocated, 0);
+  const totalSpent = categories.reduce((sum, cat) => sum + cat.spent, 0);
+  const budgetRemaining = (profile?.monthly_budget || 0) - totalExpenses;
+  const budgetUsed = profile ? (totalExpenses / profile.monthly_budget) * 100 : 0;
 
   const filteredExpenses = selectedCategory === 'all' 
     ? expenses 
     : expenses.filter(expense => expense.category === selectedCategory);
+
+  const handleAddExpense = async () => {
+    if (!newExpense.title || !newExpense.amount) return;
+
+    try {
+      await addExpense({
+        title: newExpense.title,
+        amount: parseFloat(newExpense.amount),
+        category: newExpense.category,
+        date: new Date().toISOString().split('T')[0],
+      });
+      
+      setNewExpense({ title: '', amount: '', category: 'food' });
+      setShowAddExpense(false);
+    } catch (error) {
+      console.error('Error adding expense:', error);
+    }
+  };
 
   const getCategoryColor = (category: string) => {
     const colors = {
@@ -88,7 +116,7 @@ const Budget: React.FC = () => {
       <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
         <h3 className="text-lg font-semibold text-gray-900 mb-6">Budget Categories</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {budgetCategories.map((category) => {
+          {categories.map((category) => {
             const percentage = (category.spent / category.allocated) * 100;
             const isOverBudget = category.spent > category.allocated;
             
@@ -193,7 +221,7 @@ const Budget: React.FC = () => {
               className="border border-gray-300 rounded-lg px-3 py-1 text-sm"
             >
               <option value="all">All Categories</option>
-              {categories.slice(1).map(category => (
+              {categoriesFilter.slice(1).map(category => (
                 <option key={category} value={category} className="capitalize">{category}</option>
               ))}
             </select>
@@ -225,16 +253,24 @@ const Budget: React.FC = () => {
               <input
                 type="text"
                 placeholder="Expense title"
+                value={newExpense.title}
+                onChange={(e) => setNewExpense(prev => ({ ...prev, title: e.target.value }))}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2"
               />
               <input
                 type="number"
                 placeholder="Amount"
+                value={newExpense.amount}
+                onChange={(e) => setNewExpense(prev => ({ ...prev, amount: e.target.value }))}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2"
               />
-              <select className="w-full border border-gray-300 rounded-lg px-3 py-2">
+              <select 
+                value={newExpense.category}
+                onChange={(e) => setNewExpense(prev => ({ ...prev, category: e.target.value as any }))}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2"
+              >
                 <option>Select category</option>
-                {categories.slice(1).map(category => (
+                {categoriesFilter.slice(1).map(category => (
                   <option key={category} value={category} className="capitalize">{category}</option>
                 ))}
               </select>
@@ -246,7 +282,7 @@ const Budget: React.FC = () => {
                   Cancel
                 </button>
                 <button
-                  onClick={() => setShowAddExpense(false)}
+                  onClick={handleAddExpense}
                   className="flex-1 bg-gradient-to-r from-purple-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-blue-700 transition-all"
                 >
                   Add Expense
